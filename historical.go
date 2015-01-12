@@ -2,9 +2,10 @@ package yql
 
 import (
 	"fmt"
-	"github.com/bitly/go-simplejson"
 	"strconv"
 	"time"
+
+	"github.com/bitly/go-simplejson"
 )
 
 type HistoricalPiece struct {
@@ -24,13 +25,22 @@ func (h HistoricalPiece) Price() float64 {
 
 // GetHistoricalData returns a []HistoricalPiece
 // of a stock's historical data
-func GetHistoricalData(symbol string) []HistoricalPiece {
+func GetHistoricalData(symbol string, timeInterval string) []HistoricalPiece {
 	var historicalData []HistoricalPiece
+
+	switch timeInterval {
+	case "daily":
+		timeInterval = "d"
+	case "weekly":
+		timeInterval = "w"
+	case "monthly":
+		timeInterval = "m"
+	}
 
 	query := fmt.Sprintf(
 		`SELECT * FROM %s WHERE url='%s%s' AND 
 		columns='Date,Open,High,Low,Close,Volume,AdjClose'`,
-		finaceTables["historical"], historicalUrl+symbol, "&g=m")
+		finaceTables["historical"], historicalUrl+symbol, "&g="+timeInterval)
 
 	json, _ := simplejson.NewFromReader(runQuery(query))
 	rows, _ := json.Get("query").Get("results").Get("row").Array()
