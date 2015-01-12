@@ -23,7 +23,9 @@ type HistoricalPiece struct {
 ```
 The function can be used like this:
 ```go
-days := yql.GetHistoricalData("GOOG")
+// The second parameter is the time interval.
+// You can pass in "d", "w", "m", "daily", "weekly", or "montly".
+days := yql.GetHistoricalData("GOOG", "daily")
 
 for _, day := range days {
 	fmt.Println(day.Close)
