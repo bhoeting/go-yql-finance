@@ -9,18 +9,22 @@ import (
 	"net/url"
 )
 
+// TradingDay has a method
+// Price() that returns the
+// most useful money value
+// from its implementation
 type TradingDay interface {
 	Price() float64
 }
 
 const (
-	baseUrl       string = "query.yahooapis.com"
-	publicApiUrl  string = "http://query.yahooapis.com/v1/public/yql"
-	datatablesUrl string = "store://datatables.org/alltableswithkeys"
-	historicalUrl string = "http://ichart.finance.yahoo.com/table.csv?s="
+	baseURL       string = "query.yahooapis.com"
+	publicAPIURL  string = "http://query.yahooapis.com/v1/public/yql"
+	datatablesURL string = "store://datatables.org/alltableswithkeys"
+	historicalURL string = "http://ichart.finance.yahoo.com/table.csv?s="
 )
 
-var finaceTables map[string]string = map[string]string{
+var finaceTables = map[string]string{
 	"historical": "csv",
 	"quotes":     "yahoo.finance.quotes",
 }
@@ -28,18 +32,18 @@ var finaceTables map[string]string = map[string]string{
 // runQuery runs the query and retuns the
 // results in an io.Reader
 func runQuery(query string) io.Reader {
-	queryUrl := buildUrl(query)
-	return getJSON(queryUrl)
+	queryURL := buildURL(query)
+	return getJSON(queryURL)
 }
 
-// buildUrl creates a YQL URL from a query
-func buildUrl(query string) string {
+// buildURL creates a YQL URL from a query
+func buildURL(query string) string {
 	params := url.Values{}
 	params.Add("q", query)
 	params.Add("format", "json")
-	params.Add("env", datatablesUrl)
+	params.Add("env", datatablesURL)
 
-	return publicApiUrl + "?" + params.Encode()
+	return publicAPIURL + "?" + params.Encode()
 }
 
 // getJSON returns the JSON response

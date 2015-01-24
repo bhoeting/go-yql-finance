@@ -8,6 +8,10 @@ import (
 	"github.com/bitly/go-simplejson"
 )
 
+// HistoricalPiece is a struct
+// representation of the data
+// for a trading day returned
+// from the YQL API
 type HistoricalPiece struct {
 	Low      float64
 	High     float64
@@ -40,7 +44,7 @@ func GetHistoricalData(symbol string, timeInterval string) []HistoricalPiece {
 	query := fmt.Sprintf(
 		`SELECT * FROM %s WHERE url='%s%s' AND 
 		columns='Date,Open,High,Low,Close,Volume,AdjClose'`,
-		finaceTables["historical"], historicalUrl+symbol, "&g="+timeInterval)
+		finaceTables["historical"], historicalURL+symbol, "&g="+timeInterval)
 
 	json, _ := simplejson.NewFromReader(runQuery(query))
 

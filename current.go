@@ -2,10 +2,15 @@ package yql
 
 import (
 	"fmt"
-	"github.com/bitly/go-simplejson"
 	"strconv"
+
+	"github.com/bitly/go-simplejson"
 )
 
+// CurrentPiece is a struct
+// representation of the
+// important data returned
+// by the YQL API
 type CurrentPiece struct {
 	Ask       float64
 	Open      float64
