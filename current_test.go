@@ -1,7 +1,6 @@
 package yql
 
 import (
-	"log"
 	"testing"
 	"unsafe"
 )
@@ -14,16 +13,16 @@ func TestCurrent(t *testing.T) {
 	days := GetCurrentData(symbols...)
 
 	if days == nil {
-		log.Fatal("\"days\" is nil.\n")
+		t.Fatal("\"days\" is nil.\n")
 	}
 
 	if len(days) == 0 {
-		log.Fatal("\"days\" is empty.\n")
+		t.Fatal("\"days\" is empty.\n")
 	}
 
 	for index, day := range days {
 		if unsafe.Sizeof(day) == 0 {
-			log.Fatalf("The CurrentPiece representing %s is nil.\n", symbols[index])
+			t.Fatalf("The CurrentPiece representing %s is nil.\n", symbols[index])
 		}
 	}
 }
