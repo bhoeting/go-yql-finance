@@ -43,9 +43,15 @@ func GetHistoricalData(symbol string, timeInterval string) []HistoricalPiece {
 		finaceTables["historical"], historicalUrl+symbol, "&g="+timeInterval)
 
 	json, _ := simplejson.NewFromReader(runQuery(query))
+
 	rows, _ := json.Get("query").Get("results").Get("row").Array()
 
-	for _, row := range rows {
+	for index, row := range rows {
+		// The first row must be skipped since it contains table headers
+		if index == 0 {
+			continue
+		}
+
 		historicalData = append(historicalData, newHistoricalPieceFromRow(row))
 	}
 
@@ -61,7 +67,7 @@ func newHistoricalPieceFromRow(row interface{}) HistoricalPiece {
 	h.High, _ = strconv.ParseFloat(data["High"].(string), 64)
 	h.Open, _ = strconv.ParseFloat(data["Open"].(string), 64)
 	h.Close, _ = strconv.ParseFloat(data["Close"].(string), 64)
-	h.Date, _ = time.Parse("2015-01-02", data["Date"].(string))
+	h.Date, _ = time.Parse("2006-01-02", data["Date"].(string))
 	h.Volume, _ = strconv.ParseFloat(data["Volume"].(string), 64)
 	h.AdjClose, _ = strconv.ParseFloat(data["AdjClose"].(string), 64)
 
