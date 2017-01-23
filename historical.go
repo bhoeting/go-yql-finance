@@ -29,7 +29,13 @@ func (h HistoricalPiece) Price() float64 {
 
 // GetHistoricalData returns a []HistoricalPiece
 // of a stock's historical data
-func GetHistoricalData(symbol string, timeInterval string) []HistoricalPiece {
+// data_duration[2] = []string{"2016-01-01", "2016-02-01"}
+func GetHistoricalData(symbol string, timeInterval string, date_duration [2]string) []HistoricalPiece {
+	date_begin, _ := time.Parse("2006-01-02", date_duration[0])
+	date_end, _ := time.Parse("2006-01-02", date_duration[1])
+	date_begin_str := fmt.Sprintf("&a=%02d&b=%02d&c=%d", date_begin.Month()-1, date_begin.Day(), date_begin.Year())
+	date_end_str := fmt.Sprintf("&d=%02d&e=%02d&f=%d", date_end.Month()-1, date_end.Day(), date_end.Year())
+
 	var historicalData []HistoricalPiece
 
 	switch timeInterval {
@@ -41,12 +47,18 @@ func GetHistoricalData(symbol string, timeInterval string) []HistoricalPiece {
 		timeInterval = "m"
 	}
 
-	query := fmt.Sprintf(
-		`SELECT * FROM %s WHERE url='%s%s' AND 
+	/*
+		query := fmt.Sprintf(
+			`SELECT * FROM %s WHERE url='%s%s' AND
+			columns='Date,Open,High,Low,Close,Volume,AdjClose'`,
+			finaceTables["historical"], historicalURL+symbol, "&g="+timeInterval)
+	*/
+	query2 := fmt.Sprintf(
+		`SELECT * FROM %s WHERE url='%s%s%s%s' AND
 		columns='Date,Open,High,Low,Close,Volume,AdjClose'`,
-		finaceTables["historical"], historicalURL+symbol, "&g="+timeInterval)
+		finaceTables["historical"], historicalURL+symbol, "&g="+timeInterval, date_begin_str, date_end_str)
 
-	json, _ := simplejson.NewFromReader(runQuery(query))
+	json, _ := simplejson.NewFromReader(runQuery(query2))
 
 	rows, _ := json.Get("query").Get("results").Get("row").Array()
 
