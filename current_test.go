@@ -9,7 +9,7 @@ import (
 // GetCurrentData() is not nil, empty, and
 // each HistoricalPiece is not nil.
 func TestCurrent(t *testing.T) {
-	var symbols []string = []string{"GOOG", "AAPL", "SPY"}
+	var symbols []string = []string{"GOOG", "AAPL"}
 	days := GetCurrentData(symbols...)
 
 	if days == nil {

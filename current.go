@@ -55,7 +55,7 @@ func currentPieceFromRow(row interface{}) CurrentPiece {
 	c := CurrentPiece{}
 	data, _ := row.(map[string]interface{})
 
-	c.Ask, _ = strconv.ParseFloat(data["AskRealtime"].(string), 64)
+	c.Ask, _ = strconv.ParseFloat(data["Ask"].(string), 64)
 	c.Open, _ = strconv.ParseFloat(data["Open"].(string), 64)
 	c.Name, _ = data["Name"].(string)
 	c.Symbol, _ = data["symbol"].(string)

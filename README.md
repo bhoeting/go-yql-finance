@@ -25,7 +25,9 @@ The function can be used like this:
 ```go
 // The second parameter is the time interval.
 // You can pass in "d", "w", "m", "daily", "weekly", or "montly".
-days := yql.GetHistoricalData("GOOG", "daily")
+// betwen 2016-01-01 ~ 2016-04-01
+var date_duration [2]string = [2]string{"2016-01-01", "2016-04-01"}
+days := yql.GetHistoricalData("GOOG", "daily", date_duration)
 
 for _, day := range days {
 	fmt.Println(day.Close)
